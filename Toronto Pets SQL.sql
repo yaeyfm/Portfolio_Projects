@@ -1,3 +1,5 @@
+--This Query uses Data obtained from Toronto Open Data website
+--Used AI to create a Breed List table which includes the Primary Breed and a AI Generated Clean_Breed column with corrected spelling 
 
 --Remove Duplicated from Breed List table 
 	With RowNumBreedCTE as (
@@ -32,7 +34,7 @@
 	group by _id
 	Order by Count(_id) desc
 
--- Tableau Dashboard Link: https://public.tableau.com/app/profile/yaely.fermin.mendeztableau/viz/TorontoDogs/Dashboard1#1
+
 
 ----Table for Tableau ----Join to obtain Clean_Breed---------------------------------------------------
 	Select LDC._id, LDC.Year, LDC.FSA, LDC.ANIMAL_TYPE, LDC.PRIMARY_BREED, DL.Clean_Breed,
@@ -47,39 +49,4 @@
 	;
 
 
------------------------*******************************************************************************-------------------
---Review Dangerous Dog Order Table
-
-	Select * 
-	From Projects..TO_DangerousDogOrder
-	Where Year(Date_of_Dangerous_Act) between 2023 and 2024;
-
----Table for Tableau ----Join to obtain Clean_Breed---------------------------------------------------
-	Select  DDG._id,  DDG.Forward_Sortation_Area as FSA, DDG.Name_of_Dog , DDG.Breed, DL.Clean_Breed, 
-			CASE WHEN	DL.Clean_Breed LIKE '% MIX' OR DL.Clean_Breed LIKE 'MIXED%' THEN 'YES'
-						 ELSE 'NO' END as Mixed_Breed,
-			DDG.Bite_Circumstance ,DDG.Location_of_Incident, CAST(DDG.Date_of_Dangerous_Act as Date) as Date_Of_Incident
-			
-
-	From Projects..TO_DangerousDogOrder DDG
-		LEFT JOIN Projects..Dog_Breed_List DL ON 	DDG.Breed = DL.Breed
-	Where Year(Date_of_Dangerous_Act) between 2023 and 2024;
-
-
-
-
-
-----*************************************-----------
-
---
-
-	Select * 
-	From Projects..TO_DangerousDogOrder
-	WHERE --Date_of_Dangerous_Act = '2020-10-02'
-	Forward_Sortation_Area like'M9N'
-	Order by Forward_Sortation_Area;
-
-	Select * 
-	From Projects..TO_LicensedDogsandCats
-	Where FSA ='M9N' and 
-			PRIMARY_BREED like '%POODLE%'
+-- Tableau Dashboard Link: https://public.tableau.com/app/profile/yaely.fermin.mendeztableau/viz/TorontoDogs/Dashboard1#1
